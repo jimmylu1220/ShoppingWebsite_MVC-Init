@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.Ajax.Utilities;
+using ShoppingWebsite_MVC.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -9,6 +11,7 @@ namespace ShoppingWebsite_MVC.Controllers
     public class OrderController : Controller
     {
 
+        
         //結帳頁面的controller
         // GET: Order
         public ActionResult Index()
@@ -22,30 +25,8 @@ namespace ShoppingWebsite_MVC.Controllers
         {
             if (this.ModelState.IsValid)
             {
-                var currentcart = Models.Operation.GetCurrentCart();
-
-                var userId = Convert.ToInt32(Session["UserId"]);
-
-                using(Models.OrderContext db = new Models.OrderContext())
-                {
-                    //新增一筆訂單
-                    var order = new Models.Order()
-                    {
-                        UserId = userId,
-                        RecieverName = postback.RecieverName,
-                        RecieverAddress = postback.RecieverAddress,
-                        RecieverPhone = postback.RecieverPhone
-                    };
-                    db.Orders.Add(order);
-                    db.SaveChanges();
-
-                    //將購物車商品加入變成訂單紀錄
-                    var orderDetails = currentcart.ToOrderDetailList(order.Id);
-                    db.OrderDetails.AddRange(orderDetails);
-                    db.SaveChanges();                 
-                }
-                return Content("訂購成功");
-                //return RedirectToAction("Checkout")
+                TempData["Ship"] = postback;
+                return RedirectToAction("Checkout");
             }
             return View();
         }
@@ -84,6 +65,42 @@ namespace ShoppingWebsite_MVC.Controllers
                     return View(result);
                 }
             }
+        }
+
+        public ActionResult Checkout()
+        {
+            var Ship = (ShipInfo)TempData["Ship"];
+            return View(Ship);
+        }
+
+        [HttpPost]
+        public ActionResult Checkout(Models.ShipInfo postback)
+        {
+                
+                var currentcart = Models.Operation.GetCurrentCart();
+
+                var userId = Convert.ToInt32(Session["UserId"]);
+
+                using (Models.OrderContext db = new Models.OrderContext())
+                {
+                    //新增一筆訂單
+                    var order = new Models.Order()
+                    {
+                        UserId = userId,
+                        RecieverName = postback.RecieverName,
+                        RecieverAddress = postback.RecieverAddress,
+                        RecieverPhone = postback.RecieverPhone
+                    };
+                    db.Orders.Add(order);
+                    db.SaveChanges();
+
+                    //將購物車商品加入變成訂單紀錄
+                    var orderDetails = currentcart.ToOrderDetailList(order.Id);
+                    db.OrderDetails.AddRange(orderDetails);
+                    db.SaveChanges();
+                }
+                currentcart.ClearCart();
+                return RedirectToAction("Index", "Home");                       
         }
     }
 }

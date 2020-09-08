@@ -27,5 +27,6 @@ namespace ShoppingWebsite_MVC.Models
                 throw new InvalidOperationException("System.Web.HttpContext.Current為空, 請檢查");
             }
         }
+
     }
 }

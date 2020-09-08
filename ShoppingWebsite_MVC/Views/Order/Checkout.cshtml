@@ -1,0 +1,87 @@
+﻿@model ShoppingWebsite_MVC.Models.ShipInfo
+@{
+    ViewBag.Title = "結帳";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var cart = ShoppingWebsite_MVC.Models.Operation.GetCurrentCart();
+}
+
+<h2>結帳</h2>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <td>
+                商品圖
+            </td>
+            <td>
+                名稱
+            </td>
+            <td>
+                售價
+            </td>
+            <td>
+                數量
+            </td>
+            <td>
+                小計
+            </td>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var pd in cart)
+        {
+            <tr>
+                <td><img src="@pd.DefaultImageURL" width="50" height="50" /></td>
+                <td>@pd.Name</td>
+                <td>@pd.Price</td>
+                <td>@pd.Quantity</td>
+                <td>@pd.Amount</td>
+            </tr>
+        }
+        <tr><td colspan="3"></td><td>總計</td><td>@cart.TotalAmount</td></tr>
+    </tbody>
+</table>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <h4>收貨人資訊 請確認是否無誤</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.RecieverName, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.RecieverName)
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.RecieverPhone, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.RecieverPhone)
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.RecieverAddress, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.RecieverAddress)
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            @Html.ActionLink("回去修改結帳資料", "Index", "Order", new { @class = "btn btn-primary" })
+            <input type="submit" value="確定結帳" class="btn btn-primary" />
+        </div>
+    </div>
+</div>
+}
+
