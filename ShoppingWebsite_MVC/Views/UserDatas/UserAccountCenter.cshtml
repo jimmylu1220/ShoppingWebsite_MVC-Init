@@ -1,0 +1,42 @@
+﻿@model ShoppingWebsite_MVC.Models.UserData
+
+@{
+    ViewBag.Title = "UserAccountCenter";
+}
+
+<h2>會員中心</h2>
+
+<div>
+    <h4>使用者資料</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.UserName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Email)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Phone)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Phone)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("修改會員資料", "Edit", new { id = Model.Id }, new { @class = "btn btn-primary" }) |
+    @Html.ActionLink("回到首頁", "Index","Home", new { @class = "btn btn-danger" })
+</p>
