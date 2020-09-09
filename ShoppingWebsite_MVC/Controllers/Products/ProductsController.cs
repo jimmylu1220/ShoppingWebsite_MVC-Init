@@ -50,7 +50,7 @@ namespace ShoppingWebsite_MVC.Controllers.Products
         // 如需詳細資料，請參閱 https://go.microsoft.com/fwlink/?LinkId=317598。
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Description,CategoryId,Price,PublishDate,Status,DefaultImageId,Quantity")] Product product)
+        public ActionResult Create([Bind(Include = "Id,Name,Description,CategoryId,Price,PublishDate,Status,DefaultImageId,Quantity,DefaultImageURL")] Product product)
         {
             if (ModelState.IsValid)
             {
