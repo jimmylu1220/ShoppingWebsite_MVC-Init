@@ -56,6 +56,7 @@ namespace ShoppingWebsite_MVC.Controllers.Users
                 var loginuser = db.Users.SingleOrDefault(u => u.UserAccount == user.UserAccount && u.Password == user.Password);
                 if(loginuser != null)
                 {
+                    Session["UserAccount"] = loginuser.UserAccount;
                     Session["UserId"] = loginuser.Id.ToString();
                     Session["UserName"] = loginuser.UserName;
                     return RedirectToAction("Index","Home");

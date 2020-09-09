@@ -64,9 +64,12 @@
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("首頁", "Index", "Home")</li>
                     <li>@Html.ActionLink("關於", "About", "Home")</li>
-                    <li>@Html.ActionLink("商品管理", "Index", "Products")</li>
-                    <li>@Html.ActionLink("會員管理", "Index", "UserDatas")</li>
-                    <li>@Html.ActionLink("訂單管理", "Index", "OrderManagement")</li>
+                    @if (Session["UserId"] != null && Session["UserAccount"].ToString() == "admin")
+                    {
+                        <li>@Html.ActionLink("商品管理", "Index", "Products")</li>
+                        <li>@Html.ActionLink("會員管理", "Index", "UserDatas")</li>
+                        <li>@Html.ActionLink("訂單管理", "Index", "OrderManagement")</li>
+                    }
                 </ul>
                 @if (Session["UserId"] != null)
                 {
